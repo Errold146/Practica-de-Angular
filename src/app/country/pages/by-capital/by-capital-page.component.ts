@@ -1,9 +1,11 @@
-import { rxResource } from '@angular/core/rxjs-interop';
-import { Component, inject, signal } from '@angular/core';
+
+import { firstValueFrom } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, inject, linkedSignal, resource } from '@angular/core';
+
 import { CountryService } from '../../services/country.service';
-import { SearchInputComponent } from "../../components/search-input/search-input.component";
 import { CountryListComponent } from "../../components/country-list/country-list.component";
-import { Country } from '../../interfaces/country.interface';
+import { SearchInputComponent } from "../../components/search-input/search-input.component";
 
 @Component({
     selector: 'by-capital-page',
@@ -12,28 +14,31 @@ import { Country } from '../../interfaces/country.interface';
 })
 export class ByCapitalPageComponent {
 
-    countryService = inject(CountryService);
-    query = signal('');
+    countryService = inject(CountryService)
 
-    // countryResource = rxResource<string, Country[]>({
-    //     request: () => this.query(), // aquí el "request" es un string
-    //     loader: (query: string) => this.countryService.searchByCapital(query)
-    // });
+    activatedRoute = inject(ActivatedRoute)
+    router = inject(Router)
 
+    queryParam = this.activatedRoute.snapshot.queryParamMap.get('query') ?? ''
+    query = linkedSignal(() => this.queryParam)
+
+    countryResource = resource({
+        params: () => ({ query: this.query() }),
+        loader: async ({params}) => {
+            if ( !params.query ) return []
+
+            this.router.navigate(['/country/by-capital'], {
+                queryParams: {
+                    query: params.query
+                }
+            })
+
+            return await firstValueFrom(
+                this.countryService.searchByCapital(params.query)
+            )
+        }
+    })
 }
-
-
-// Resorces con Promises
-// countryResource = resource({
-//     params: () => ({ query: this.query() }),
-//     loader: async ({params}) => {
-//         if ( !params.query ) return [];
-
-//         return await firstValueFrom(
-//             this.countryService.searchByCapital(params.query)
-//         )
-//     }
-// })
 
 // OTRA FORMA DE HACERLO, VERSIÓN MÁS ESTABLE...
 // isLoading = signal(false)

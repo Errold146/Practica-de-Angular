@@ -1,0 +1,35 @@
+<div class="flex justify-center ">
+    <div class="stats flex flex-col sm:flex-row gap-4 shadow-lg rounded-xl bg-base-100 border border-base-300 p-4 sm:p-6 lg:p-8 max-w-4xl w-full">
+        <div class="stat text-primary-content">
+            <div class="stat-title text-sm font-semibold tracking-wide text-primary">Nombre</div>
+            <div class="stat-value text-2xl sm:text-3xl font-bold text-primary">{{ country().name }}</div>
+            <div class="stat-desc text-xs sm:text-sm text-base-content/70">{{ country().region }}</div>
+        </div>
+
+        <div class="stat text-secondary-content">
+            <div class="stat-title text-sm font-semibold tracking-wide text-secondary">Sub Región</div>
+            <div class="stat-value text-2xl sm:text-3xl font-bold text-secondary">{{ country().subRegion }}</div>
+            <div class="stat-desc text-xs sm:text-sm text-base-content/70">{{ country().region }}</div>
+        </div>
+
+        <div class="stat text-accent-content">
+            <div class="stat-title text-sm font-semibold tracking-wide text-accent">Población</div>
+            <div class="stat-value text-2xl sm:text-3xl font-bold text-accent">{{ country().population | number }}</div>
+            <div class="stat-desc text-xs sm:text-sm text-base-content/70">Año: {{ currentYear() }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="card bg-base-100 shadow-xl mt-6 max-w-xs mx-auto">
+    <figure class="px-4 pt-4">
+        <img
+            [src]="country().flagSvg"
+            alt="Bandera de {{ country().name }}"
+            class="rounded-xl"
+        />
+    </figure>
+    <div class="card-body items-center text-center">
+        <h2 class="card-title text-sm text-base-content/70">Bandera de {{ country().name }}</h2>
+    </div>
+</div>
+

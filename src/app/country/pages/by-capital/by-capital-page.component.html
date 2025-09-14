@@ -2,17 +2,13 @@
     placeholder="Buscar por capital"
     buttonText="Buscar Capital"
     (value)="query.set($event)"
+    [initialValue]="query()"
 />
 
-@if ( countryResource.error() ) {
-    <h3 class=" text-red-800 bg-red-100 p-2 rounded-md my-10 text-2xl max-w-2xl flex justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="M12 7c-.736 0-1.313.649-1.244 1.4l.494 4.15a.76.76 0 0 0 .75.7a.76.76 0 0 0 .75-.7l.494-4.15C13.314 7.65 12.736 7 12 7m0 10a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5"/><path fill="currentColor" d="M12 4.5a7.5 7.5 0 1 0 0 15a7.5 7.5 0 0 0 0-15M3.5 12a8.5 8.5 0 1 1 17 0a8.5 8.5 0 0 1-17 0"/></svg>
-        {{ countryResource.error() }}
-    </h3>
-
-} @if ( countryResource.hasValue() ) {
-    <country-list
-        [countries]="countryResource.value()!"
-    />
-}
+<country-list
+    [countries]="countryResource.value() ?? []"
+    [errorMessage]="countryResource.error()"
+    [isEmpty]="countryResource.value()?.length === 0"
+    [isLoading]="countryResource.isLoading()"
+/>
 

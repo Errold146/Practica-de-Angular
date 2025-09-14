@@ -1,15 +1,19 @@
 import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 import { Country } from '../../interfaces/country.interface';
+import { IsLoadingComponent } from "../../../shared/components/is-loading/is-loading.component";
 
 @Component({
   selector: 'country-list',
-  imports: [DecimalPipe, RouterLink],
+  imports: [DecimalPipe, RouterLink, IsLoadingComponent],
   templateUrl: './country-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CountryListComponent {
     countries = input.required<Country[]>()
+
+    errorMessage = input<string | unknown | null>()
+    isLoading = input<boolean>(false)
+    isEmpty = input<boolean>(false)
 }

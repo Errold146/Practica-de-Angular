@@ -5,12 +5,14 @@ export class CountryMapper {
 
     static mapRestCountryToCountry(restCountry: RestCountry): Country {
         return {
-            capital: restCountry.capital.join(', '),
+            capital: restCountry.capital?.join(', '),
             cca2: restCountry.cca2,
             flag: restCountry.flag,
             flagSvg: restCountry.flags.svg,
             name: restCountry.translations['spa'].common ?? 'No Spanish name',
-            population: restCountry.population
+            population: restCountry.population,
+            region: restCountry.region,
+            subRegion: restCountry.subregion,
         }
     }
 
